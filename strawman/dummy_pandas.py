@@ -30,7 +30,9 @@ def unique_columns_df(
     columns: List[str] = None,
 ):
     if size[0] > len(allowed_chars):
-        raise ValueError("Cannot make unique columns with less allowed characters than length of column!")
+        raise ValueError(
+            "Cannot make unique columns with less allowed characters than length of column!"
+        )
 
     df = pd.DataFrame(np.full(size, np.nan), columns=columns)
     return df.applymap(

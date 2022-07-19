@@ -15,6 +15,14 @@ locations = ["strawman", "tests", "noxfile.py"]
 
 
 @session()
+def lint(session: Session) -> None:
+    args = session.posargs or locations
+    session.install("black", "isort")
+    session.run("black", *args)
+    session.run("isort", *args)
+
+
+@session()
 def style_checking(session: Session) -> None:
     args = session.posargs or locations
     session.install(
@@ -24,16 +32,12 @@ def style_checking(session: Session) -> None:
         "flake8-debugger",
         "flake8-comprehensions",
         "flake8-print",
+        "flake8-black",
+        "flake8-black",
+        "darglint",
+        "pydocstyle",
     )
     session.run("pflake8", *args)
-
-
-@session()
-def lint(session: Session) -> None:
-    args = session.posargs or locations
-    session.install("black", "isort")
-    session.run("black", *args)
-    session.run("isort", *args)
 
 
 @session()
