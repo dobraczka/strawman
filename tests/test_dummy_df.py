@@ -1,6 +1,7 @@
 import pytest
 
 from strawman import dummy_df, dummy_triples
+from strawman.dummy_pandas import TRIPLES_COL
 
 
 def test_dummy_df():
@@ -11,14 +12,21 @@ def test_dummy_df():
     assert dummy_df(shape, seed=seed).equals(dummy_df(shape, seed=seed))
 
 
-def test_dummy_triples():
+def test_dummy_df_bad_inputs():
+    with pytest.raises(ValueError):
+        dummy_df((10, 3), columns=["a", "b", "c", "d"])
+
+
+@pytest.mark.parametrize("length", [5, 10, 20])
+def test_dummy_triples(length):
     prefix = "e"
     num_entities = 5
     trips = dummy_triples(
-        length=10, num_entities=num_entities, num_rel=3, entity_prefix=prefix
+        length=length, num_entities=num_entities, num_rel=3, entity_prefix=prefix
     )
     columns = trips.columns
-    assert trips.shape == (10, 3)
+    assert list(columns) == TRIPLES_COL
+    assert trips.shape == (length, 3)
     # assert no self relations
     assert not trips[columns[0]].eq(columns[2]).any()
     # assert entities start with prefix
@@ -30,14 +38,23 @@ def test_dummy_triples():
     assert len(unique_ents) == num_entities
 
     seed = 17
-    assert dummy_triples(length=10, seed=seed).equals(
-        dummy_triples(length=10, seed=seed)
+    assert dummy_triples(length=length, seed=seed).equals(
+        dummy_triples(length=length, seed=seed)
     )
 
     # test attributes
-    trips = dummy_triples(length=10,relation_triples=False,columns=columns)
+    trips = dummy_triples(length=length, relation_triples=False, columns=columns)
     # assert no overlap between entities and attributes
     assert set(trips[columns[0]]).intersection(trips[columns[2]]) == set()
+
+
+def test_predefined():
+    entity_ids = ["e1", "e2", "e3", "e4"]
+    relation_ids = ["rel1", "rel2", "rel3"]
+    trips = dummy_triples(10, entity_ids=entity_ids, relation_ids=relation_ids)
+    columns = trips.columns
+    assert set(trips[columns[0]]) == set(entity_ids)
+    assert set(trips[columns[1]]) == set(relation_ids)
 
 
 def test_dummy_triples_bad_inputs():
