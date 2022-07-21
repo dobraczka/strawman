@@ -37,6 +37,7 @@ def style_checking(session: Session) -> None:
         "darglint",
         "pydocstyle",
     )
+    # darglint does not want to be configured through pyproject.toml
     session.run("pflake8", "--docstring-style", "sphinx", *args)
 
 

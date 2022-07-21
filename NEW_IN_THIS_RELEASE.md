@@ -1,1 +1,2 @@
-First release containing dummy_pandas and dummy_triples function
+- Remove missed print statements (and fixed some CI issues to avoid this in the future)
+- Improved doc
