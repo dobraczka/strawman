@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 
 from .utils import (
-    _init_rng,
     _coherence_check_non_negative,
+    _init_rng,
     random_string_generator,
     sequence_choice,
     shuffle,

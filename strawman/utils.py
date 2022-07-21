@@ -1,10 +1,11 @@
+import logging
 import string
 from typing import List, Optional, Sequence, Union
-import logging
 
 import numpy as np
 
 logger = logging.getLogger(__name__)
+
 
 def _init_rng(seed: int = None):
     if seed is None:
@@ -54,7 +55,9 @@ def shuffle(
     return [mylist[i] for i in rng.permutation(len(mylist))]
 
 
-def shuffled_overlong(mylist: List, length: int, rng: np.random.Generator = None) -> List:
+def shuffled_overlong(
+    mylist: List, length: int, rng: np.random.Generator = None
+) -> List:
     """Return a shuffled list which can be longer or shorter (containing the same elements).
 
     :param mylist: The list from which to choose elements
