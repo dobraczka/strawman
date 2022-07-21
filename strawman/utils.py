@@ -1,11 +1,44 @@
 import string
-from typing import Optional, Sequence, Union
+from typing import List, Optional, Sequence, Union
 
 import numpy as np
 
 
-def sequence_choice(rng: np.random.Generator, seq: Sequence):
+def sequence_choice(seq: Sequence, rng: np.random.Generator):
+    """Choose an element randomly from the sequence.
+
+    :param seq: sequence to choose from
+    :param rng: rng to control randomness
+    """
     return seq[rng.integers(0, len(seq))]
+
+
+def shuffle(
+    mylist: List,
+    rng: np.random.Generator,
+) -> List:
+    """Return a new shuffled list.
+
+    :param mylist: List to shuffle
+    :param rng: rng to control randomness
+    """
+    return [mylist[i] for i in rng.permutation(len(mylist))]
+
+
+def shuffled_overlong(mylist: List, length: int,rng: np.random.Generator) -> List:
+    """Return a shuffled list which can be longer or shorter (containing the same elements).
+
+    :param mylist: The list from which to choose elements
+    :param length: length of output
+    :param rng: rng to control randomness
+    """
+    res: List = []
+    while len(res) < length:
+        for i in rng.permutation(len(mylist)):
+            res.append(mylist[i])
+            if len(res) == length:
+                break
+    return res
 
 
 def random_string_generator(
@@ -15,7 +48,7 @@ def random_string_generator(
 ):
     if rng is None:
         rng = np.random.default_rng()
-    return "".join(sequence_choice(rng, allowed_chars) for x in range(str_size))
+    return "".join(sequence_choice(allowed_chars,rng) for x in range(str_size))
 
 
 def split_seq(seq: Sequence, parts: int):

@@ -10,6 +10,8 @@ from .utils import (
     coherence_check_non_negative,
     random_string_generator,
     sequence_choice,
+    shuffle,
+    shuffled_overlong,
 )
 
 TRIPLES_COL = ["head", "relation", "tail"]
@@ -98,14 +100,19 @@ def _coherence_check(
                 )
 
 
+def _choose_tail(head: str, tail_values: List[str], rng: np.random.Generator):
+    tail = sequence_choice(tail_values, rng)
+    while head == tail and not len(tail_values) == 1:
+        tail = sequence_choice(tail_values, rng)
+    return tail
+
+
 def _choose_rel_tail(
     head: str, rel_values: List[str], tail_values: List[str], rng: np.random.Generator
 ):
     """Choose relation and tail where tail is not equal to head."""
-    rel = sequence_choice(rng, rel_values)
-    tail = sequence_choice(rng, tail_values)
-    while head == tail and not len(tail_values) == 1:
-        tail = sequence_choice(rng, tail_values)
+    rel = sequence_choice(rel_values, rng)
+    tail = _choose_tail(head=head, tail_values=tail_values, rng=rng)
     return rel, tail
 
 
@@ -226,16 +233,20 @@ def dummy_triples(
     while len(rows) < length:
         # ensure all entities show up
         if not ensured_all_entities:
-            for head in head_values:
-                rel, tail = _choose_rel_tail(
-                    head=head, rel_values=rel_values, tail_values=tail_values, rng=rng
-                )
+            longest = max(len(head_values), len(rel_values))
+            for head, rel in zip(
+                shuffled_overlong(head_values, longest, rng),
+                shuffled_overlong(rel_values, longest, rng),
+            ):
+                tail = _choose_tail(head=head, tail_values=tail_values, rng=rng)
+                print((head, rel, tail))
                 rows.add((head, rel, tail))
             ensured_all_entities = True
         else:
-            head = sequence_choice(rng, head_values)
+            head = sequence_choice(head_values, rng)
             rel, tail = _choose_rel_tail(
                 head=head, rel_values=rel_values, tail_values=tail_values, rng=rng
             )
             rows.add((head, rel, tail))
+            print((head, rel, tail))
     return pd.DataFrame(rows, columns=columns)

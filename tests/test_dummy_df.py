@@ -22,7 +22,11 @@ def test_dummy_triples(length):
     prefix = "e"
     num_entities = 5
     trips = dummy_triples(
-        length=length, num_entities=num_entities, num_rel=3, entity_prefix=prefix
+        length=length,
+        num_entities=num_entities,
+        num_rel=3,
+        entity_prefix=prefix,
+        seed=8039,
     )
     columns = trips.columns
     assert list(columns) == TRIPLES_COL
