@@ -1,6 +1,6 @@
 import logging
 import string
-from typing import List, Optional, Sequence, Union
+from typing import Any, List, Optional, Sequence, Union
 
 import numpy as np
 
@@ -14,11 +14,12 @@ def _init_rng(seed: int = None):
     return np.random.default_rng(seed=seed)
 
 
-def sequence_choice(seq: Sequence, rng: np.random.Generator = None):
+def sequence_choice(seq: Sequence, rng: np.random.Generator = None) -> Any:
     """Choose an element randomly from the sequence.
 
     :param seq: sequence to choose from
     :param rng: rng to control randomness
+    :return: chosen element
 
     Example:
 
@@ -42,6 +43,7 @@ def shuffle(
 
     :param mylist: List to shuffle
     :param rng: rng to control randomness
+    :return: shuffled list
 
     Example:
 
@@ -63,6 +65,7 @@ def shuffled_overlong(
     :param mylist: The list from which to choose elements
     :param length: length of output
     :param rng: rng to control randomness
+    :return: shuffled list with specified length containing input elements
 
     Example:
 
@@ -91,6 +94,7 @@ def random_string_generator(
     :param str_size: Size of output string
     :param allowed_chars: chars from which to pick
     :param rng: rng to control randomness
+    :return: random string generate from specified chars
 
     Example:
 
@@ -103,11 +107,12 @@ def random_string_generator(
     return "".join(sequence_choice(allowed_chars, rng) for x in range(str_size))
 
 
-def split_seq(seq: Sequence, parts: int):
+def split_seq(seq: Sequence, parts: int) -> List:
     """Split a sequence into :obj:`parts` (which are not necessarily the same size).
 
     :param seq: Sequence to split
     :param parts: Number of parts
+    :return: split sequence as list
 
     Example:
 

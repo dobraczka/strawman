@@ -26,7 +26,7 @@ def dummy_df(
     allowed_chars: str = string.ascii_letters,
     columns: List[str] = None,
     seed: int = None,
-):
+) -> pd.DataFrame:
     """Create a dummy DataFrame.
 
     :param shape: Dimensions of the DataFrame
@@ -34,6 +34,8 @@ def dummy_df(
     :param allowed_chars: string containing the allowed chars
     :param columns: columns names
     :param seed: seed for reproducibility
+    :return: Randomly generated DataFrame
+    :raises ValueError: if length of columns does not match shape
 
     Example:
 
@@ -107,8 +109,15 @@ def _choose_tail(head: str, tail_values: List[str], rng: np.random.Generator):
 
 def _choose_rel_tail(
     head: str, rel_values: List[str], tail_values: List[str], rng: np.random.Generator
-):
-    """Choose relation and tail where tail is not equal to head."""
+) -> Tuple[str, str]:
+    """Choose relation and tail where tail is not equal to head.
+
+    :param head: head value
+    :param rel_values: possible relation values
+    :param tail_values: possible tail values
+    :param rng: rng to control randomness
+    :return: relation, tail
+    """
     rel = sequence_choice(rel_values, rng)
     tail = _choose_tail(head=head, tail_values=tail_values, rng=rng)
     return rel, tail
@@ -127,7 +136,7 @@ def dummy_triples(
     content_length: int = 3,
     allowed_chars: str = string.ascii_letters,
     seed: int = None,
-):
+) -> pd.DataFrame:
     """Create dummy DataFrame in form of triples.
 
     The default columns are ["head","relation","tail"].
@@ -151,6 +160,7 @@ def dummy_triples(
     :param content_length: Length of randomly generated string
     :param allowed_chars: Allowed characters in randomly generated string
     :param seed: Seed for reproducibility.
+    :return: randomly generated triple DataFrame
 
     Example:
 
@@ -237,7 +247,6 @@ def dummy_triples(
                 shuffled_overlong(rel_values, longest, rng),
             ):
                 tail = _choose_tail(head=head, tail_values=tail_values, rng=rng)
-                print((head, rel, tail))
                 rows.add((head, rel, tail))
             ensured_all_entities = True
         else:
@@ -246,5 +255,4 @@ def dummy_triples(
                 head=head, rel_values=rel_values, tail_values=tail_values, rng=rng
             )
             rows.add((head, rel, tail))
-            print((head, rel, tail))
     return pd.DataFrame(rows, columns=columns)
