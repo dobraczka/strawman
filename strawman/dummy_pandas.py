@@ -239,22 +239,3 @@ def dummy_triples(
             )
             rows.add((head, rel, tail))
     return pd.DataFrame(rows, columns=columns)
-
-
-def test(e, r):
-    head_values = ["e" + str(i) for i in range(e)]
-    rel_values = ["rel" + str(i) for i in range(r)]
-    tail_values = head_values
-    res = set()
-    for h in head_values:
-        for r in rel_values:
-            for t in tail_values:
-                if h != t:
-                    res.add((h, r, t))
-    return len(res)
-
-
-if __name__ == "__main__":
-    import sys
-
-    test(sys.argv[1], sys.argv[2])
