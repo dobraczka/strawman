@@ -30,8 +30,8 @@ Or create a triples DataFrame:
     4   e1     rel1   e0
 
 
-Overview
-========
+Installation
+============
 
 You can install strawman via pip:
 
@@ -42,11 +42,6 @@ You can install strawman via pip:
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
-
-
-.. toctree::
-   :maxdepth: 3
    :hidden:
    :caption: Documentation
 

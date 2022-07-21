@@ -7,7 +7,8 @@ import numpy as np
 import pandas as pd
 
 from .utils import (
-    coherence_check_non_negative,
+    _init_rng,
+    _coherence_check_non_negative,
     random_string_generator,
     sequence_choice,
     shuffle,
@@ -54,10 +55,7 @@ def dummy_df(
         raise ValueError(
             f"Length of columns ({len(columns)}) does not match shape ({shape})!"
         )
-    if seed is None:
-        seed = np.random.default_rng().integers(0, 10000)
-        logger.debug(f"Selected seed {seed}")
-    rng = np.random.default_rng(seed=seed)
+    rng = _init_rng(seed=seed)
     df = pd.DataFrame(np.full(shape, np.nan), columns=columns)
     return df.applymap(
         lambda x, content_length, allowed_chars, rng: random_string_generator(
@@ -79,10 +77,10 @@ def _coherence_check(
     content_length: int,
     allowed_chars: str,
 ):
-    coherence_check_non_negative(length)
-    coherence_check_non_negative(num_entities)
-    coherence_check_non_negative(num_rel)
-    coherence_check_non_negative(content_length)
+    _coherence_check_non_negative(length)
+    _coherence_check_non_negative(num_entities)
+    _coherence_check_non_negative(num_rel)
+    _coherence_check_non_negative(content_length)
     if num_entities and num_entities > length:
         raise ValueError(
             f"num_entities={num_entities} cannot be larger than length={length}"
