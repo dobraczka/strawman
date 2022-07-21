@@ -34,13 +34,6 @@ jobs:
         python -m pip install nox_poetry
     - name: Test with nox
       run: nox -s tests
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        directory: ./coverage/reports/
-        fail_ci_if_error: true
-        files: ./coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        verbose: true
+    - name: Upload coverage reports to Codecov with GitHub Action
+      if: ${{ matrix.os == "ubuntu-latest" && matrix.python-version == "3.10" }}
+      uses: codecov/codecov-action@v3
