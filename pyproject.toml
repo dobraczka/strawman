@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "strawman"
 version = "0.1.0"
-description = "Library for simple dummy dataframes"
+description = "Library for simple dummy objects"
 authors = ["Daniel Obraczka <obraczka@informatik.uni-leipzig.de>"]
 license = "MIT"
 readme = "README.md"
