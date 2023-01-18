@@ -1,5 +1,5 @@
 import logging
-import random
+import math
 import string
 from typing import List, Optional, Set, Tuple
 
@@ -11,7 +11,6 @@ from .utils import (
     _init_rng,
     random_string_generator,
     sequence_choice,
-    shuffle,
     shuffled_overlong,
 )
 
@@ -161,6 +160,7 @@ def dummy_triples(
     :param allowed_chars: Allowed characters in randomly generated string
     :param seed: Seed for reproducibility.
     :return: randomly generated triple DataFrame
+    :raises ValueError: If dummy_triples cannot be generated with the given specifications
 
     Example:
 
@@ -209,10 +209,10 @@ def dummy_triples(
     if columns is None:
         columns = TRIPLES_COL
     if num_entities is None:
-        num_entities = int(length * 0.7)
+        num_entities = math.ceil(length * 0.7)
     if num_rel is None:
         minimum_rel = int(length / (num_entities * num_entities)) + 1
-        num_rel = max(minimum_rel, int(num_entities * 0.7))
+        num_rel = min(max(minimum_rel, int(num_entities * 0.7)), length)
 
     if seed is None:
         seed = np.random.default_rng().integers(0, 10000)
@@ -238,7 +238,12 @@ def dummy_triples(
     )
     rows: Set[Tuple[str, str, str]] = set()
     ensured_all_entities = False
+    max_tries = length * 3
     while len(rows) < length:
+        if max_tries == 0:
+            raise ValueError(
+                "Could not create DataFrame with the given specifications..."
+            )
         # ensure all entities show up
         if not ensured_all_entities:
             longest = max(len(head_values), len(rel_values))
@@ -255,4 +260,5 @@ def dummy_triples(
                 head=head, rel_values=rel_values, tail_values=tail_values, rng=rng
             )
             rows.add((head, rel, tail))
+        max_tries -= 1
     return pd.DataFrame(rows, columns=columns)

@@ -17,14 +17,35 @@ def test_dummy_df_bad_inputs():
         dummy_df((10, 3), columns=["a", "b", "c", "d"])
 
 
-@pytest.mark.parametrize("length", [5, 10, 20])
-def test_dummy_triples(length):
+@pytest.mark.parametrize(
+    "length, num_entities, num_rel",
+    [
+        (1, None, None),
+        (1, None, 1),
+        (2, None, None),
+        (2, None, 1),
+        (2, None, 2),
+        (3, None, None),
+        (3, None, 3),
+        (5, None, None),
+        (5, None, 3),
+        (5, 5, None),
+        (5, 5, 3),
+        (10, None, None),
+        (10, None, 5),
+        (10, 5, None),
+        (20, None, None),
+        (20, 5, None),
+        (20, 5, 3),
+    ],
+)
+def test_dummy_triples(length, num_entities, num_rel):
     prefix = "e"
-    num_entities = 5
+    nr = num_rel or min(3, length)
     trips = dummy_triples(
         length=length,
         num_entities=num_entities,
-        num_rel=3,
+        num_rel=nr,
         entity_prefix=prefix,
         seed=8039,
     )
@@ -39,7 +60,8 @@ def test_dummy_triples(length):
     # no duplicates
     assert not trips.duplicated().any()
     unique_ents = set(trips[columns[0]]).union(trips[columns[2]])
-    assert len(unique_ents) == num_entities
+    if num_entities is not None:
+        assert len(unique_ents) == num_entities
 
     seed = 17
     assert dummy_triples(length=length, seed=seed).equals(
