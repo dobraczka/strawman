@@ -33,18 +33,22 @@ def style_checking(session: Session) -> None:
         "flake8-comprehensions",
         "flake8-print",
         "flake8-black",
-        "flake8-black",
         "darglint",
         "pydocstyle",
     )
-    # darglint does not want to be configured through pyproject.toml
     session.run("pflake8", "--docstring-style", "sphinx", *args)
+
+
+@session()
+def pyroma(session: Session) -> None:
+    session.install("poetry", "pyroma")
+    session.run("pyroma", "--min", "10", ".")
 
 
 @session()
 def type_checking(session: Session) -> None:
     args = session.posargs or locations
-    session.run_always("poetry", "install", external=True)
+    session.install("mypy")
     session.run("mypy", "--ignore-missing-imports", *args)
 
 
