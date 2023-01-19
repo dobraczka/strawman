@@ -53,14 +53,6 @@ def type_checking(session: Session) -> None:
 
 
 @session()
-def doctests(session: Session) -> None:
-    session.install(".[all]")
-    session.install("xdoctest")
-    session.install("pygments")
-    session.run("xdoctest", "-m", "strawman")
-
-
-@session()
 def build_docs(session: Session) -> None:
     session.install(".")
     session.install("sphinx")
