@@ -11,7 +11,7 @@ def tests(session: Session) -> None:
     session.run("pytest", *args)
 
 
-locations = ["strawman", "tests", "noxfile.py"]
+locations = ["src", "tests", "noxfile.py"]
 
 
 @session()
@@ -36,7 +36,7 @@ def style_checking(session: Session) -> None:
         "darglint",
         "pydocstyle",
     )
-    session.run("pflake8", "--docstring-style", "sphinx", *args)
+    session.run("pflake8", "--docstring-style", "google", *args)
 
 
 @session()
@@ -54,9 +54,5 @@ def type_checking(session: Session) -> None:
 
 @session()
 def build_docs(session: Session) -> None:
-    session.install(".")
-    session.install("sphinx")
-    session.install("insegel")
-    session.cd("docs")
-    session.run("make", "clean", external=True)
-    session.run("make", "html", external=True)
+    session.install(".[docs]")
+    session.run("mkdocs", "build", external=True)

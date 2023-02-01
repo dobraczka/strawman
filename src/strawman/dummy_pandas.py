@@ -28,29 +28,36 @@ def dummy_df(
 ) -> pd.DataFrame:
     """Create a dummy DataFrame.
 
-    :param shape: Dimensions of the DataFrame
-    :param content_length: length of the strings in the cells
-    :param allowed_chars: string containing the allowed chars
-    :param columns: columns names
-    :param seed: seed for reproducibility
-    :return: Randomly generated DataFrame
-    :raises ValueError: if length of columns does not match shape
+    Args:
+        shape: Dimensions of the DataFrame
+        content_length: length of the strings in the cells
+        allowed_chars: string containing the allowed chars
+        columns: columns names
+        seed: seed for reproducibility
+
+    Returns:
+        Randomly generated DataFrame
+
+    Raises:
+        ValueError: if length of columns does not match shape
 
     Example:
 
+    ```pycon
     >>> from strawman import dummy_df
     >>> dummy_df((10,3))
              0    1    2
-    0  Ass  wEB  jEx
-    1  xxD  TtW  Xzs
-    2  ITh  mpj  tgy
-    3  rgN  ZyW  kzR
-    4  FPO  XiY  ARn
-    5  gCh  ArF  QlR
-    6  AxL  PMg  oMG
-    7  cBo  NEN  ljX
-    8  mpT  rjh  smJ
-    9  lZe  Krw  TRs
+        0  Ass  wEB  jEx
+        1  xxD  TtW  Xzs
+        2  ITh  mpj  tgy
+        3  rgN  ZyW  kzR
+        4  FPO  XiY  ARn
+        5  gCh  ArF  QlR
+        6  AxL  PMg  oMG
+        7  cBo  NEN  ljX
+        8  mpT  rjh  smJ
+        9  lZe  Krw  TRs
+    ```
     """
     if columns and len(columns) != shape[1]:
         raise ValueError(
@@ -111,11 +118,14 @@ def _choose_rel_tail(
 ) -> Tuple[str, str]:
     """Choose relation and tail where tail is not equal to head.
 
-    :param head: head value
-    :param rel_values: possible relation values
-    :param tail_values: possible tail values
-    :param rng: rng to control randomness
-    :return: relation, tail
+    Args:
+        head: head value
+        rel_values: possible relation values
+        tail_values: possible tail values
+        rng: rng to control randomness
+
+    Returns:
+        relation, tail
     """
     rel = sequence_choice(rel_values, rng)
     tail = _choose_tail(head=head, tail_values=tail_values, rng=rng)
@@ -139,31 +149,36 @@ def dummy_triples(
     """Create dummy DataFrame in form of triples.
 
     The default columns are ["head","relation","tail"].
-    Entries in the head column have an :obj:`entity_prefix` ("e" by default),
+    Entries in the head column have an `entity_prefix` ("e" by default),
     with numbers as suffix. This is analagously done for the entries
-    in the relation column but with the :obj:`relation_prefix`.
+    in the relation column but with the `relation_prefix`.
 
     All entities show up at least once. Self-links (e.g. ["e1", "rel1", "e1"]) are avoided.
 
-    If :obj:`relation_triples` is False, the last column contains randomly generated strings.
+    If `relation_triples` is False, the last column contains randomly generated strings.
 
-    :param length: Length of the DataFrame
-    :param num_entities: Number of unique entities
-    :param num_rel: Number of unique relations
-    :param entity_prefix: Prefix for entity strings
-    :param relation_prefix: Prefix for relation strings
-    :param relation_triples: If True the last column contains entities, else randomly generated string
-    :param entity_ids: Predefined entity ids
-    :param relation_ids: Predefined relation ids
-    :param columns: Column names ["head","relation","tail"] by default
-    :param content_length: Length of randomly generated string
-    :param allowed_chars: Allowed characters in randomly generated string
-    :param seed: Seed for reproducibility.
-    :return: randomly generated triple DataFrame
-    :raises ValueError: If dummy_triples cannot be generated with the given specifications
+    Args:
+        length: Length of the DataFrame
+        num_entities: Number of unique entities
+        num_rel: Number of unique relations
+        entity_prefix: Prefix for entity strings
+        relation_prefix: Prefix for relation strings
+        relation_triples: If True the last column contains entities, else randomly generated string
+        entity_ids: Predefined entity ids
+        relation_ids: Predefined relation ids
+        columns: Column names ["head","relation","tail"] by default
+        content_length: Length of randomly generated string
+        allowed_chars: Allowed characters in randomly generated string
+        seed: Seed for reproducibility.
+
+    Returns:
+        randomly generated triple DataFrame
+
+    Raises:
+        ValueError: If dummy_triples cannot be generated with the given specifications
 
     Example:
-
+    ```pycon
     >>> from strawman import dummy_triples
     >>> df = dummy_triples(10)
     >>> df
@@ -178,9 +193,11 @@ def dummy_triples(
     7   e5     rel1   e3
     8   e6     rel2   e0
     9   e6     rel0   e2
+    ```
 
     Create an attribute triple DataFrame with predefined entities
 
+    ```pycon
     >>> dummy_triples(10, entity_ids=set(df["head"]), relation_triples=False)
           head relation tail
     0   e5     rel1  LOR
@@ -193,7 +210,7 @@ def dummy_triples(
     7   e3     rel2  ata
     8   e5     rel2  gHk
     9   e5     rel0  rmM
-
+    ```
     """
     _coherence_check(
         length=length,

@@ -17,18 +17,22 @@ def _init_rng(seed: int = None):
 def sequence_choice(seq: Sequence, rng: np.random.Generator = None) -> Any:
     """Choose an element randomly from the sequence.
 
-    :param seq: sequence to choose from
-    :param rng: rng to control randomness
-    :return: chosen element
+    Args:
+        seq: sequence to choose from
+        rng: rng to control randomness
+
+    Returns:
+        chosen element
 
     Example:
-
+    ```pycon
     >>> from strawman.utils import sequence_choice
     >>> sequence_choice([1,2,3,4])
     2
     >>> sequence_choice("abcdef")
     'f'
     >>>
+    ```
     """
     if rng is None:
         rng = _init_rng()
@@ -41,16 +45,19 @@ def shuffle(
 ) -> List:
     """Return a new shuffled list.
 
-    :param mylist: List to shuffle
-    :param rng: rng to control randomness
-    :return: shuffled list
+    Args:
+        mylist: List to shuffle
+        rng: rng to control randomness
+
+    Returns:
+        shuffled list
 
     Example:
-
+    ```pycon
     >>> from strawman.utils import shuffle
     >>> shuffle([1,2,3,4])
     [2, 1, 3, 4]
-
+    ```
     """
     if rng is None:
         rng = _init_rng()
@@ -62,16 +69,20 @@ def shuffled_overlong(
 ) -> List:
     """Return a shuffled list which can be longer or shorter (containing the same elements).
 
-    :param mylist: The list from which to choose elements
-    :param length: length of output
-    :param rng: rng to control randomness
-    :return: shuffled list with specified length containing input elements
+    Args:
+        mylist: The list from which to choose elements
+        length: length of output
+        rng: rng to control randomness
+
+    Returns:
+        shuffled list with specified length containing input elements
 
     Example:
-
+    ```pycon
     >>> from strawman.utils import shuffled_overlong
     >>> shuffled_overlong([1,2,3,4],length=10)
     [4, 3, 1, 2, 1, 2, 4, 3, 3, 4]
+    ```
     """
     if rng is None:
         rng = _init_rng()
@@ -91,16 +102,21 @@ def random_string_generator(
 ) -> str:
     """Generate random strings from allowed charactes with specified size.
 
-    :param str_size: Size of output string
-    :param allowed_chars: chars from which to pick
-    :param rng: rng to control randomness
-    :return: random string generate from specified chars
+    Args:
+        str_size: Size of output string
+        allowed_chars: chars from which to pick
+        rng: rng to control randomness
+
+    Returns:
+        random string generate from specified chars
 
     Example:
 
+    ```pycon
     >>> from strawman.utils import random_string_generator
     >>> random_string_generator(10)
     'rhVShtnDZw'
+    ```
     """
     if rng is None:
         rng = _init_rng()
@@ -110,15 +126,20 @@ def random_string_generator(
 def split_seq(seq: Sequence, parts: int) -> List:
     """Split a sequence into :obj:`parts` (which are not necessarily the same size).
 
-    :param seq: Sequence to split
-    :param parts: Number of parts
-    :return: split sequence as list
+    Args:
+        seq: Sequence to split
+        parts: Number of parts
+
+    Returns:
+        split sequence as list
 
     Example:
 
+    ```pycon
     >>> from strawman.utils import split_seq
     >>> split_seq("abcdefgh",parts=3)
     ['ab', 'cd', 'efgh']
+    ```
     """
     split_size = len(seq) // parts
     start = 0
