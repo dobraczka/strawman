@@ -1,8 +1,7 @@
 <p align="center">
-<img src="https://github.com/dobraczka/strawman/raw/main/docs/strawman.png" alt="strawman logo", width=200/>
+<img src="https://github.com/dobraczka/strawman/raw/main/docs/assets/logo.png" alt="strawman logo", width=200/>
 <h2 align="center"> strawman</h2>
 </p>
-
 
 <p align="center">
 <a href="https://github.com/dobraczka/strawman/actions/workflows/main.yml"><img alt="Actions Status" src="https://github.com/dobraczka/strawman/actions/workflows/main.yml/badge.svg?branch=main"></a>
