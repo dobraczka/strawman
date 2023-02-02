@@ -5,6 +5,7 @@ description = "Library for simple dummy objects"
 authors = ["Daniel Obraczka <obraczka@informatik.uni-leipzig.de>"]
 license = "MIT"
 readme = "README.md"
+changelog = "CHANGELOG.md"
 keywords = ["prototyping"]
 classifiers = ["Development Status :: 4 - Beta", "Programming Language :: Python", "Programming Language :: Python :: 3.8", "Programming Language :: Python :: 3.9", "Programming Language :: Python :: 3.10", "Programming Language :: Python :: 3 :: Only", "Topic :: Scientific/Engineering","Topic :: Utilities"]
 repository = "https://github.com/dobraczka/strawman"
